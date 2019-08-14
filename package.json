@@ -1,0 +1,34 @@
+{
+  "name": "accordion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "alias": {
+    "~": "/src"
+  },
+  "dependencies": {
+    "@apollo/react-hooks": "3.0.0",
+    "@emotion/core": "10.0.14",
+    "@emotion/styled": "10.0.14",
+    "@types/react": "16.8.23",
+    "@types/react-dom": "16.8.4",
+    "apollo": "2.16.0",
+    "apollo-cache-inmemory": "1.6.2",
+    "apollo-client": "2.6.3",
+    "apollo-link-state": "0.4.2",
+    "apollo-react": "0.7.1",
+    "emotion-theming": "10.0.14",
+    "graphql-tag": "2.10.1",
+    "react": "16.8.6",
+    "react-apollo": "2.5.8",
+    "react-dom": "16.8.6"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.6.1"
+  },
+  "keywords": []
+}
