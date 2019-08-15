@@ -1,5 +1,5 @@
 {
-  "name": "accordion",
+  "name": "react-hooks-accordion",
   "version": "1.0.0",
   "description": "",
   "main": "index.html",
@@ -21,6 +21,8 @@
     "apollo-client": "2.6.3",
     "apollo-link-state": "0.4.2",
     "apollo-react": "0.7.1",
+    "babel-plugin-emotion": "10.0.15",
+    "babel-plugin-macros": "2.6.1",
     "emotion-theming": "10.0.14",
     "graphql-tag": "2.10.1",
     "react": "16.8.6",

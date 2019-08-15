@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Accordion, useActive } from '~/components/Accordion'
 import { styled } from '~/theme'
+import { CatEmoji, DogEmoji, Dog2Emoji, DolphinEmoji } from '~/components/Emoji'
 
 const Window = styled.article`
   font-family: Helvetica, sans-serif;
@@ -18,38 +19,52 @@ const Window = styled.article`
   }
 `
 
-const CatEmoji = (
-  <span role="img" aria-label="cat">
-    🐱
-  </span>
-)
-
-const DogEmoji = (
-  <span role="img" aria-label="dog">
-    🐶
-  </span>
-)
-
-const Dog2Emoji = (
-  <span role="img" aria-label="dog viewed from side">
-    🐕
-  </span>
-)
-
-const DolphinEmoji = (
-  <span role="img" aria-label="dolphin">
-    🐬
-  </span>
-)
-
-const Row = styled.li<{ selected: boolean }>`
+const Row = styled.section<{ selected: boolean }>`
   list-style: none;
-  font-weight: ${props => (props.selected ? 'bold' : 'normal')};
   line-height: 2em;
 
+  position: relative;
+  background: white;
+  transition: all 0.15s ease-in-out;
+  display: block;
+
+  &:before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    box-shadow: 0 -1px 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(0, 0, 0, 0.24);
+  }
+
   > .inner {
-    margin-left: 5px;
     display: ${props => (props.selected ? 'inline-block' : 'none')};
+    padding: ${props => (props.selected ? '0 10px 20px' : '0')};
+
+    width: calc(100% - 40px);
+    font-size: 11pt;
+    color: rgba(0, 0, 0, 0.54);
+
+    height: ${props => (props.selected ? 'auto' : 'inherit')};
+  }
+
+  > h4 {
+    > span {
+      display: ${props => (props.selected ? 'inline-block' : 'none')};
+      margin-left: 0px;
+    }
+
+    padding-left: ${props => (props.selected ? '10px' : '30px')};
+
+    &:before {
+      margin-left: ${props => (props.selected ? '0' : '-10px')};
+      transform: ${props => (props.selected ? 'rotate(90deg)' : 'none')};
+      display: ${props => (props.selected ? 'none' : 'inline-block')};
+    }
   }
 `
 
@@ -64,42 +79,87 @@ const Panel: React.FC = ({ children }) => {
   )
 }
 
-const Inner: React.FC = ({ children }) => {
-  return <span className="inner">{children}</span>
+const PanelInner: React.FC = ({ children }) => {
+  return <div className="inner">{children}</div>
 }
+
+const PanelHeader: React.FC = styled.h4`
+  margin: 0;
+  margin-top: 20px;
+  padding: 0 5px;
+  cursor: pointer;
+  border-bottom: 1px solid gray;
+
+  &:before {
+    position: absolute;
+    display: block;
+    content: '\\203a';
+    font-size: 18pt;
+    left: 20px;
+    top: -2px;
+    transition: transform 0.15s ease-in-out;
+    color: rgba(0, 0, 0, 0.54);
+  }
+`
 
 export const DemoApp = () => {
   return (
     <Window>
       <Accordion>
         <Panel>
-          <button>Meow</button>
+          <PanelHeader>{CatEmoji} Meow</PanelHeader>
 
-          <Inner>{CatEmoji}</Inner>
+          <PanelInner>
+            <p>All kittehz all the tiem</p>
+          </PanelInner>
         </Panel>
 
         <Panel>
-          <button>Woof</button>
+          <PanelHeader>{DogEmoji} Woof</PanelHeader>
 
-          <Inner>{DogEmoji}</Inner>
+          <PanelInner>
+            <p>Woof woof friend</p>
 
-          <Inner>
             <Accordion>
               <Panel>
-                <button>Bernese Mountain Dog</button> <Inner>{Dog2Emoji}</Inner>
+                <PanelHeader>{Dog2Emoji} Bernese Mountain Dog</PanelHeader>
+                <PanelInner>
+                  <p>A friend indeed</p>
+                </PanelInner>
               </Panel>
 
               <Panel>
-                <button>Golden Retriever</button> <Inner>{Dog2Emoji}</Inner>
+                <PanelHeader>{Dog2Emoji} Golden Retriever</PanelHeader>
+                <PanelInner>
+                  <p>A True friend</p>
+                </PanelInner>
               </Panel>
             </Accordion>
-          </Inner>
+          </PanelInner>
         </Panel>
 
         <Panel>
-          <button>Squeak</button>
+          <PanelHeader>Squeak</PanelHeader>
 
-          <Inner>{DolphinEmoji}</Inner>
+          <PanelInner>
+            <p>What goes squeek in the night</p>
+
+            <Accordion>
+              <Panel>
+                <PanelHeader>{DolphinEmoji} Mouse</PanelHeader>{' '}
+                <PanelInner>
+                  <p>Little guys</p>
+                </PanelInner>
+              </Panel>
+
+              <Panel>
+                <PanelHeader>{DolphinEmoji} Dolphin</PanelHeader>{' '}
+                <PanelInner>
+                  <p>Sea mammals rule</p>
+                </PanelInner>
+              </Panel>
+            </Accordion>
+          </PanelInner>
         </Panel>
       </Accordion>
     </Window>

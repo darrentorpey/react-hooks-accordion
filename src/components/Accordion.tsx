@@ -30,7 +30,7 @@ export const Accordion: React.FC = ({ children }) => {
 
   return (
     <SelectedContext.Provider value={{ selected, setSelected }}>
-      <ul ref={myRef}>{children}</ul>
+      <div ref={myRef}>{children}</div>
     </SelectedContext.Provider>
   )
 }
