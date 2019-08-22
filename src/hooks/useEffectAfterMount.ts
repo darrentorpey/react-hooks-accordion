@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function useEffectAfterMount(cb: any, dependencies: any[]) {
+export function useEffectAfterMount(cb: any) {
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
@@ -9,6 +9,5 @@ export function useEffectAfterMount(cb: any, dependencies: any[]) {
     }
 
     setMounted(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cb, mounted, ...dependencies])
+  }, [cb, mounted])
 }

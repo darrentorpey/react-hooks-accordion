@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { useEffectAfterMount } from '~/hooks/useEffectAfterMount'
-
 const SelectedContext = React.createContext<{
   selected: HTMLElement | null
   setSelected: (e: HTMLElement) => void
@@ -10,36 +8,73 @@ const SelectedContext = React.createContext<{
   setSelected: () => {},
 })
 
-export const Accordion: React.FC = ({ children }) => {
-  const [selected, setSelected] = React.useState<HTMLElement | null>(null)
+const OpenContext = React.createContext<{
+  open: HTMLElement | null
+  setOpen: (e: HTMLElement) => void
+}>({
+  open: null,
+  setOpen: () => {},
+})
 
-  useEffectAfterMount(() => {
-    const kids = myRef.current!.children
-
-    // Challenge: why do we have to short-circuit when `selected` is truthy?
-    if (selected || !kids.length) {
-      return
-    }
-
-    const firstChild = kids[0] as HTMLElement
-
-    setSelected(firstChild)
-  }, [])
-
-  const myRef = React.useRef<HTMLUListElement | null>(null)
-
-  return (
-    <SelectedContext.Provider value={{ selected, setSelected }}>
-      <div ref={myRef}>{children}</div>
-    </SelectedContext.Provider>
-  )
-}
-
-export function useActive(ref: React.RefObject<HTMLElement>) {
+export function useAccordion() {
   const { selected, setSelected } = React.useContext(SelectedContext)
 
   return {
-    isActive: !!ref.current && ref.current === selected,
-    setActive: setSelected,
+    selected,
+    setSelected,
+  }
+}
+
+export const Accordion: React.FC = ({ children }) => {
+  const [selected, setSelected] = React.useState<HTMLElement | null>(null)
+  const [open, setOpen] = React.useState<HTMLElement | null>(null)
+
+  return (
+    <OpenContext.Provider value={{ open, setOpen }}>
+      <SelectedContext.Provider value={{ selected, setSelected }}>
+        {children}
+      </SelectedContext.Provider>
+    </OpenContext.Provider>
+  )
+}
+
+export function useSelected(ref: React.RefObject<HTMLElement>) {
+  const { selected, setSelected } = React.useContext(SelectedContext)
+
+  return {
+    isSelected: !!ref.current && ref.current === selected,
+    setSelected,
+  }
+}
+
+export function useOpen(ref: React.RefObject<HTMLElement>) {
+  const { open, setOpen } = React.useContext(OpenContext)
+
+  return {
+    isOpen: !!ref.current && ref.current === open,
+    setOpen,
+  }
+}
+
+export function useAccordionPanel(
+  ref: React.RefObject<HTMLElement>,
+  delay: number,
+) {
+  const { isSelected, setSelected } = useSelected(ref)
+  const { isOpen, setOpen } = useOpen(ref)
+
+  React.useEffect(() => {
+    if (!isOpen && isSelected) {
+      setTimeout(() => {
+        setOpen(ref.current!)
+      }, delay)
+    }
+  }, [delay, ref, isOpen, isSelected, setOpen])
+
+  return {
+    selected: isSelected,
+    setSelected,
+    isOpen,
+    setOpen,
   }
 }
